@@ -12,88 +12,108 @@ import org.testng.annotations.BeforeTest;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Parameters;
 
-public class BaseTest extends ObjectLibrary{
-//public WebDriver driver=null;
-//public static WebDriver driver_static=null;
+import com.aventstack.extentreports.reporter.configuration.Theme;
 
+public class BaseTest extends ObjectLibrary {
 
-@BeforeSuite
-public void getSuiteConnections() {
-	Reporter.log("Get SuiteConnections Done Sucessful", true);
-}
+	@BeforeSuite
+	public void getSuiteConnections() {
+		Reporter.log("Get SuiteConnections Done Sucessful", true);
+	}
 
-@BeforeTest
-public void precondition() {
-	Reporter.log("precondition Done Sucessful", true);
+	@BeforeTest
+	public void precondition() {
+		// Create Object For All Library
+		creatobject();
 
-}
+		// Configure the SparkReport Information
+		spark.config().setDocumentTitle("Regression Testing For the RegisterPage");
+		spark.config().setReportName("RegressionSuite");
+		spark.config().setTheme(Theme.DARK);
 
-@Parameters("browser")
-@BeforeClass
-public void browserSetup(String bname) {
-creatobject();
-webdriverobj.launchBrowser(bname);
-//Fetch url sata property-file
-String url = propertyobj.readdata("url");
-webdriverobj.maximizeBrowser();
-// Step 2 :Navigate to the Application via URL
-//driver.get(URL);
+		// Attach the Spark Report and ExtentReport
+		report.attachReporter(spark);
 
-//from the xml file
-webdriverobj.navigateToApp(url);
-//report and console printing statement
-Reporter.log("BrowserSetup:"+bname+" Sucessful", true);
+		// Configure the System Information in Extent Report
+		report.setSystemInfo("DeviceName:", "Veera");
+		report.setSystemInfo("OperatingSystem:", "WINDOWS 11");
+		report.setSystemInfo("Browser:", "Chrome");
+		report.setSystemInfo("BrowserVersion:", "chrome-128.0.6613.85");
 
-}
+		Reporter.log("precondition Done Sucessful", true);
 
-@BeforeMethod
-public void login() {
-	Reporter.log("login Sucessful", true);
-}
+	}
 
-@AfterMethod
-public void Logout() {
-	Reporter.log("Logout Sucessful", true);
+	@Parameters("browser")
+	@BeforeClass
+	public void browserSetup(String bname) {
 
-}	
-	
-@AfterClass
-public void closebrowser() {
-	// Close The Browser
-	//driver.close();
-//webdriverlibrary.quitAllWindows();
-	webdriverobj.closeWindow();
-	Reporter.log("Closebrowser Sucessful", true);
+		//launch browser
+		webdriverobj.launchBrowser(bname);
+		
+        //Fetch url sata property-file
+		String URL = propertyobj.readdata("url");
+		
+		//maximize the broswer
+		webdriverobj.maximizeBrowser();
+		
+        // Step 2 :Navigate to the Application via URL
+		webdriverobj.navigateToApp(URL);
+		
+        //report and console printing statement
+		Reporter.log("BrowserSetup:" + bname + " Sucessful", true);
 
-}
+	}
 
-@AfterTest
-public void postcondition() {
-	Reporter.log("postcondition Done Sucessful", true);
+	@BeforeMethod
+	public void login() {
+		Reporter.log("login Sucessful", true);
+	}
 
-}
+	@AfterMethod
+	public void Logout() {
+		Reporter.log("Logout Sucessful", true);
 
+	}
 
-@AfterSuite
-public void terminateSuiteconnection() {
-	Reporter.log("Terminate Suiteconnection Done Sucessful", true);
+	@AfterClass
+	public void closebrowser() {
+		// Close The Browser
+		webdriverobj.closeWindow();
+		Reporter.log("Closebrowser Sucessful", true);
 
-}
-@DataProvider(name="Register")
-public Object[][] Registerdata(){
-	Object[][] data=new Object[3][3];
-	data[0][0]="Veera";
-	data[0][1]="kvveereshamma@gmail.com";
-	data[0][2]="Software TestEngineer";
-	
-	data[0][0]="omkar";
-	data[0][1]="kuruvaomkar029@gmail.com";
-	data[0][2]="Drafting Designer";
-	
-	data[0][0]="Lakshmi";
-	data[0][1]="kvlakshmi2981@gmail.com";
-	data[0][2]="Automation TestEngineer";
-	return data;
-	
-}
+	}
+
+	@AfterTest
+	public void postcondition() {
+		// Flush the report Information
+		report.flush();
+		Reporter.log("postcondition Done Sucessful", true);
+
+	}
+
+	@AfterSuite
+	public void terminateSuiteconnection() {
+
+		Reporter.log("Terminate Suiteconnection Done Sucessful", true);
+
+	}
+
+	@DataProvider(name = "Register")
+	public Object[][] Registerdata() {
+		Object[][] data = new Object[3][3];
+		data[0][0] = "Veera";
+		data[0][1] = "kvveereshamma@gmail.com";
+		data[0][2] = "Software TestEngineer";
+
+		data[0][0] = "omkar";
+		data[0][1] = "kuruvaomkar029@gmail.com";
+		data[0][2] = "Drafting Designer";
+
+		data[0][0] = "Lakshmi";
+		data[0][1] = "kvlakshmi2981@gmail.com";
+		data[0][2] = "Automation TestEngineer";
+		return data;
+
+	}
 }

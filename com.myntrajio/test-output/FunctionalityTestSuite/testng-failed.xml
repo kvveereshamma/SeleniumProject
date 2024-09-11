@@ -6,10 +6,13 @@
     <classes>
       <class name="com.myntrajio.RegisterTest.RegisterTest">
         <methods>
+          <include name="registerValidateRegisterButtonPosition"/>
           <include name="browserSetup"/>
+          <include name="registerValidateRegisterButtonSize"/>
           <include name="terminateSuiteconnection"/>
           <include name="Logout"/>
           <include name="getSuiteConnections"/>
+          <include name="registerValidateRegisterButtonColor"/>
           <include name="login"/>
           <include name="closebrowser"/>
           <include name="register_validData"/>
